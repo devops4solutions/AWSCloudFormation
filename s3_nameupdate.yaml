@@ -1,0 +1,7 @@
+Resources:
+  MyS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties: 
+      AccessControl: PublicRead
+      BucketName: "test2-bucket-devops4solutions"
+ 

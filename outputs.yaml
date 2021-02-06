@@ -1,0 +1,21 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Mappings: 
+  RegionMap: 
+    us-east-2:
+      HVM64: ami-01aab85a5e4a5a0fe
+      HVMG2: ami-0a584ac55a7631c0c
+Resources: 
+  myEC2Instance: 
+    Type: "AWS::EC2::Instance"
+    Properties: 
+      ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", HVM64]
+      InstanceType: t2.micro
+Outputs:
+   InstanceID:
+    Description: The Instance ID
+    Value: !Ref myEC2Instance
+   StackEC2:
+    Description: The ID of the EC2 Instance
+    Value: !Ref myEC2Instance
+    Export:
+      Name: !Sub "${AWS::StackName}-EC2"

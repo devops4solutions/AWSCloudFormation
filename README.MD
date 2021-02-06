@@ -1,3 +1,5 @@
+This repository storing cloudformation template
+
 ### Create a S3 bucket
 - Upload a template
 - Create a changeset

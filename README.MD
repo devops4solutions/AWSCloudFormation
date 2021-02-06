@@ -1,5 +1,5 @@
 ### Create a S3 bucket
-- Upload a teamplate
+- Upload a template
 - Create a changeset
 - Verify the changes
 - Execute the changes

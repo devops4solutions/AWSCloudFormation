@@ -21,4 +21,7 @@
 - For accidental deletion, you can enable the termination protection
 - When you delete the stack all the resources will automatically get deleted
 
+
+
+
  

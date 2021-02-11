@@ -1,40 +1,49 @@
-Resources:
-  AutoScalingGroup:
-    Type: 'AWS::AutoScaling::AutoScalingGroup'
-    Properties:
-      AvailabilityZones: !GetAZs ''
-      LaunchConfigurationName: !Ref LaunchConfig
-      DesiredCapacity: '2'
-      MinSize: '1'
-      MaxSize: '4'
-    CreationPolicy:
-      ResourceSignal:
-        Count: '2'
-        Timeout: PT15M
-    UpdatePolicy:
-      AutoScalingScheduledAction:
-        IgnoreUnmodifiedGroupSizeProperties: 'false'
-      AutoScalingRollingUpdate:
-        MinInstancesInService: '1'
-        MaxBatchSize: '2'
-        PauseTime: PT2M
-        WaitOnResourceSignals: 'true'
-  LaunchConfig:
-    Type: 'AWS::AutoScaling::LaunchConfiguration'
-    Properties:
-      ImageId: ami-01aab85a5e4a5a0fe
-      InstanceType: t2.micro
-      UserData: !Base64 
-        'Fn::Join':
-          - ''
-          - - |
-              #!/bin/bash -xe
-            - |
-              yum install -y aws-cfn-bootstrap
-            - '/opt/aws/bin/cfn-signal -e 0 --stack '
-            - !Ref 'AWS::StackName'
-            - ' --resource AutoScalingGroup '
-            - ' --region '
-            - !Ref 'AWS::Region'
-            - |+
-
+{
+  "Resources": {
+    "AutoScalingGroup": {
+      "Type": "AWS::AutoScaling::AutoScalingGroup",
+      "Properties": {
+        "AvailabilityZones": { "Fn::GetAZs": "" },
+        "LaunchConfigurationName": { "Ref": "LaunchConfig" },
+        "DesiredCapacity": "2",
+        "MinSize": "1",
+        "MaxSize": "4"
+      },
+      "CreationPolicy": {
+        "ResourceSignal": {
+          "Count": "2",
+          "Timeout": "PT15M"
+        }
+      },
+      "UpdatePolicy" : {
+        "AutoScalingScheduledAction" : {
+          "IgnoreUnmodifiedGroupSizeProperties" : "false"
+        },
+        "AutoScalingRollingUpdate" : {
+          "MinInstancesInService" : "1",
+          "MaxBatchSize" : "2",
+          "PauseTime" : "PT2M",
+          "WaitOnResourceSignals" : "true"
+        }
+      }
+    },
+    "LaunchConfig": {
+      "Type": "AWS::AutoScaling::LaunchConfiguration",
+      "Properties": {
+        "ImageId": "ami-01aab85a5e4a5a0fe",
+        "InstanceType": "t2.micro",
+        "UserData": {
+          "Fn::Base64": {
+            "Fn::Join" : [ "", [
+              "#!/bin/bash -xe\n",
+              "yum install -y aws-cfn-bootstrap\n",
+              "/opt/aws/bin/cfn-signal -e 0 --stack ", { "Ref": "AWS::StackName" },
+              " --resource AutoScalingGroup ",
+              " --region ", { "Ref" : "AWS::Region" }, "\n"
+            ] ]
+          }
+        }
+      }
+    }
+  }
+}
